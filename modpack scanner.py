@@ -59,6 +59,7 @@ for entry in obj :
 									description = mcmeta['modList'][0]['description']
 								if 'url' in mcmeta['modList'][0]:
 									url = mcmeta['modList'][0]['url']
+				finally:
 					mod = []
 					print("Modname: ", modname)
 					
@@ -84,7 +85,6 @@ for entry in obj :
 					mod.append(description) #4
 					mod.append(url) #5
 					mods.append(mod) #6
-				finally:
 					zip.close()
 #print(mods) #debug
 
@@ -111,22 +111,25 @@ while True:
 	if mode == '3':
 		exit('Bye!')
 	if mode == '1':
-		mods_d = mods
 		mods_req = []
+		used_for_req = []
 		for i in range(len(mods)):
 			mods_req.append([mods[i], []])
+			used_for_req.append(0)
 			
 		html = '<ul>\r\n'
 		for i in range(len(mods)):
-			if mods_d[i][2] != []:
-				for req in mods_d[i][2]:
+			if mods[i][2] != []:
+				for req in mods[i][2]:
 					for j in range(len(mods)):
 						if req == mods[j][1]:
 							mods_req[j][1].append(mods[i])
+							used_for_req[i] = 1
 							break;
 		#print(mods_req)	
 		for i in range(len(mods)):
-			html += createLi(mods_req[i][0], 1)
+			if(used_for_req != 1):
+				html += createLi(mods_req[i][0], 1)
 			if len(mods_req[i][1]) > 0:
 				html += "  <ul>\r\n"
 				for mod_r in mods_req[i][1]:
